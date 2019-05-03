@@ -156,6 +156,20 @@ if(!isset($default['de_listtype_list_skin'])) {
                     ADD `de_mobile_listtype_img_width` int(11) NOT NULL DEFAULT '0' AFTER `de_mobile_listtype_list_row`,
                     ADD `de_mobile_listtype_img_height` int(11) NOT NULL DEFAULT '0' AFTER `de_mobile_listtype_img_width` ", true);
 }
+
+// 임시저장 테이블이 없을 경우 생성
+if(!sql_query(" DESC {$g5['g5_shop_post_log_table']} ", false)) {
+    sql_query(" CREATE TABLE IF NOT EXISTS `{$g5['g5_shop_post_log_table']}` (
+                  `oid` bigint(20) unsigned NOT NULL,
+                  `mb_id` varchar(255) NOT NULL DEFAULT '',
+                  `post_data` text NOT NULL,
+                  `ol_code` varchar(255) NOT NULL DEFAULT '',
+                  `ol_msg` varchar(255) NOT NULL DEFAULT '',
+                  `ol_datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+                  `ol_ip` varchar(25) NOT NULL DEFAULT '',
+                  PRIMARY KEY (`oid`)
+                ) ENGINE=MyISAM DEFAULT CHARSET=utf8; ", false);
+}
 ?>
 
 <form name="fconfig" action="./configformupdate.php" onsubmit="return fconfig_check(this)" method="post" enctype="MULTIPART/FORM-DATA">
@@ -732,7 +746,7 @@ if(!isset($default['de_listtype_list_skin'])) {
         <tr class="pg_info_fld inicis_info_fld">
             <th scope="row"><label for="de_inicis_sign_key">KG이니시스 웹결제 사인키</label></th>
             <td>
-                <?php echo help("KG이니시스에서 발급받은 웹결제 사인키를 입력합니다.\n관리자 페이지의 상점정보 > 계약정보 > 부가정보의 웹결제 signkey생성 조회 버튼 클릭, 팝업창에서 생성 버튼 클릭 후 해당 값을 입력합니다."); ?>
+                <?php echo help("KG이니시스에서 발급받은 웹결제 사인키를 입력합니다.\nKG이니시스 상점관리자 > 상점정보 > 계약정보 > 부가정보의 웹결제 signkey생성 조회 버튼 클릭, 팝업창에서 생성 버튼 클릭 후 해당 값을 입력합니다."); ?>
                 <input type="text" name="de_inicis_sign_key" value="<?php echo $default['de_inicis_sign_key']; ?>" id="de_inicis_sign_key" class="frm_input" size="40" maxlength="50">
             </td>
         </tr>
